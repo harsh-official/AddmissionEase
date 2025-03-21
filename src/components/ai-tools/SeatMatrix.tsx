@@ -29,6 +29,15 @@ interface CollegeSeats {
   branches: BranchSeats[]
 }
 
+// Add these type guard functions after the interfaces
+function isCollegeSeatsArray(data: CollegeSeats | CollegeSeats[] | null): data is CollegeSeats[] {
+  return Array.isArray(data);
+}
+
+function isSingleCollege(data: CollegeSeats | CollegeSeats[] | null): data is CollegeSeats {
+  return data !== null && !Array.isArray(data) && Array.isArray(data.branches);
+}
+
 export function SeatMatrix() {
   const [collegeCode, setCollegeCode] = useState<string>("")
   const [branch, setBranch] = useState<string>("")
@@ -139,7 +148,7 @@ export function SeatMatrix() {
             </h3>
 
             <div className="overflow-x-auto w-full">
-              {Array.isArray(seatData) ? (
+              {isCollegeSeatsArray(seatData) ? (
                 // Multiple colleges
                 <div className="space-y-6">
                   {seatData.map((college, index) => (
@@ -172,8 +181,8 @@ export function SeatMatrix() {
                     </div>
                   ))}
                 </div>
-              ) : seatData.branches ? (
-                // Single college, multiple branches
+              ) : isSingleCollege(seatData) ? (
+                // Single college
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -198,33 +207,7 @@ export function SeatMatrix() {
                     ))}
                   </TableBody>
                 </Table>
-              ) : (
-                // Single college, single branch
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>College</TableHead>
-                      <TableHead>Branch</TableHead>
-                      <TableHead>Total</TableHead>
-                      <TableHead>General</TableHead>
-                      <TableHead>SC</TableHead>
-                      <TableHead>ST</TableHead>
-                      <TableHead>OBC</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">{seatData.collegeCode}</TableCell>
-                      <TableCell>{seatData.branch}</TableCell>
-                      <TableCell>{seatData.seats.total}</TableCell>
-                      <TableCell>{seatData.seats.general}</TableCell>
-                      <TableCell>{seatData.seats.sc}</TableCell>
-                      <TableCell>{seatData.seats.st}</TableCell>
-                      <TableCell>{seatData.seats.obc}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              )}
+              ) : null}
             </div>
           </div>
         </CardFooter>
