@@ -1,0 +1,16 @@
+{
+  "name": "jee-neet-platform-lambda",
+  "version": "1.0.0",
+  "description": "Lambda functions for JEE and NEET Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1473.0",
+    "uuid": "^9.0.1"
+  }
+}
+
